@@ -97,7 +97,7 @@ header {
     align-items: center;
     justify-content: center;
 
-    background-image: url("../assets/survyback.png");
+    background-image: none;
     background-size: cover;
     background-position: center;
     color: #ffffff;
