@@ -1,94 +1,521 @@
-<?php
-session_start();
-?>
+/* ==========================================================================
+   ShopPulse — About page
+   Palette:  ink #0F1C2E · paper #F2F4F7 · surface #FFFFFF
+             coral #FF6452 · teal #06A88B · amber #FFB238 · violet #6E56CF
+   Type:     Fraunces (display) + Inter (text/UI)
+   ========================================================================== */
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | Survey Analysis Tool</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
 
-<!-- Navigation Bar -->
-<header>
-    <nav>
-        <h1>Survey Analysis Tool</h1>
-        <ul>
-            <li><a href="Form.php">Home🏠</a></li>
-            <li><a href="survey.php">Survey</a></li>
-            <li><a href="results.php">Results📊</a></li>
-            <li><a href="about.php">About</a></li>
-            <li><a href="contact.php">Contact📞</a></li>
+:root {
+    --ink: #0F1C2E;
+    --ink-soft: #45536A;
+    --paper: #F2F4F7;
+    --surface: #FFFFFF;
+    --line: #DDE2E9;
 
-            <?php if (isset($_SESSION["user_id"])): ?>
-                <li><a href="logout.php">Logout</a></li>
-            <?php else: ?>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="register.php">Register</a></li>
-            <?php endif; ?>
-        </ul>
-    </nav>
-</header>
+    --coral: #FF6452;
+    --coral-ink: #B23D2F;
+    --teal: #06A88B;
+    --teal-ink: #05715D;
+    --amber: #FFB238;
+    --amber-ink: #8A5B0A;
+    --violet: #6E56CF;
+    --violet-ink: #45318F;
 
-<!-- Hero Section with Background Image -->
-<section class="hero-about">
-    <div class="overlay"></div>
-    <div class="hero-content">
-        <h2>Empowering SMEs Through Customer Insights</h2>
-        <p>Our mission is to provide e-commerce businesses with smart, data-driven feedback solutions to enhance customer satisfaction.</p>
-    </div>
-</section>
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-<!-- About Content Section -->
-<section class="about-content">
-    <div class="about-container">
-        <h2>About Survey Analysis Tool</h2>
-        <p>The <strong>Survey Analysis Tool</strong> is designed to help businesses collect, analyze, and visualize customer satisfaction data efficiently. In today’s competitive e-commerce landscape, understanding consumer feedback is crucial for improving service quality and building lasting relationships with customers.</p>
-        
-        <h3>Our Mission</h3>
-        <p>We aim to empower **small and medium-sized enterprises (SMEs)** with an easy-to-use, cost-effective feedback analysis platform. Through **custom surveys, real-time analytics, and dynamic visualizations**, our tool helps businesses make informed decisions to improve customer satisfaction.</p>
+    --radius: 14px;
+    --max: 1120px;
+}
 
-        <h3>Why Choose Our Tool?</h3>
-        <div class="features-grid">
-            <div class="feature">
-                <img src="pexels-rdne-9034221.jpg" alt="Custom Surveys">
-                <h4>Custom Surveys</h4>
-                <p>Personalized surveys tailored to your business needs.</p>
-            </div>
-            <div class="feature">
-                <img src="pexels-shkrabaanthony-5816283.jpg" alt="Advanced Analytics">
-                <h4>Advanced Analytics</h4>
-                <p>Gain deep insights into customer sentiment and feedback trends.</p>
-            </div>
-            <div class="feature">
-                <img src="pexels-serpstat-177219-572056.jpg" alt="Dynamic Visualization">
-                <h4>Dynamic Visualization</h4>
-                <p>Track customer satisfaction over time with interactive graphs and reports.</p>
-            </div>
-        </div>
+* { box-sizing: border-box; }
 
-        <!-- "Learn More" Button -->
-        <div class="learn-more-container">
-            <a href="why_choose.php" class="learn-more-btn">Learn More ➜</a>
-        </div>
+html { scroll-behavior: smooth; }
 
-        <h3>Who Can Benefit?</h3>
-        <p>This tool is perfect for:</p>
-        <ul>
-            <li>✔ E-commerce stores seeking better feedback management.</li>
-            <li>✔ SMEs looking for cost-effective analytics solutions.</li>
-            <li>✔ Businesses aiming to improve customer satisfaction.</li>
-        </ul>
-    </div>
-</section>
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+}
 
-<!-- Footer -->
-<footer>
-    <p>&copy; 2025 Survey Analysis Tool | Designed for SMEs</p>
-</footer>
+a { color: inherit; }
 
-</body>
-</html> 
+h1, h2, h3 {
+    font-family: var(--serif);
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+    outline: 3px solid var(--violet);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+}
+
+/* ---------- Nav ---------- */
+
+.simple-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 26px 32px;
+    gap: 24px;
+}
+
+.simple-logo {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.35rem;
+    text-decoration: none;
+    color: var(--ink);
+}
+
+.simple-nav nav {
+    display: flex;
+    gap: 30px;
+    flex: 1;
+    justify-content: center;
+}
+
+.simple-nav nav a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.simple-nav nav a:hover { color: var(--ink); border-color: var(--coral); }
+
+.simple-nav nav a[href="about.html"] {
+    color: var(--ink);
+    border-color: var(--coral);
+}
+
+.nav-login {
+    text-decoration: none;
+    background: var(--ink);
+    color: var(--surface);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 999px;
+    transition: background 0.15s ease;
+}
+
+.nav-login:hover { background: var(--violet); }
+
+/* ---------- Page intro / hero ---------- */
+
+.page-intro {
+    position: relative;
+    max-width: var(--max);
+    margin: 20px auto 0;
+    padding: 70px 32px 90px;
+    overflow: hidden;
+}
+
+.page-intro-inner {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 24px;
+}
+
+.hero-art {
+    width: 100%;
+    max-width: 430px;
+    justify-self: end;
+    overflow: visible;
+}
+
+.page-intro span {
+    display: inline-block;
+    color: var(--teal-ink);
+    background: rgba(6, 168, 139, 0.12);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+}
+
+.page-intro h1 {
+    font-size: clamp(2.3rem, 4.2vw, 3.4rem);
+    font-weight: 600;
+    max-width: 15ch;
+    line-height: 1.08;
+}
+
+.page-intro p {
+    max-width: 46ch;
+    margin-top: 22px;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+}
+
+/* ---------- Generic section rhythm ---------- */
+
+.about-section {
+    padding: 76px 32px;
+}
+
+.about-section > * { max-width: var(--max); margin-left: auto; margin-right: auto; }
+
+.light-section {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.section-heading {
+    max-width: var(--max);
+    margin: 0 auto 48px;
+}
+
+.section-heading span {
+    display: block;
+    color: var(--violet-ink);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 600;
+    max-width: 24ch;
+}
+
+/* ---------- About content (text + card pairs) ---------- */
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 64px;
+    align-items: start;
+}
+
+.about-text span {
+    display: block;
+    color: var(--coral-ink);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.about-text h2 {
+    font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+    font-weight: 600;
+    margin-bottom: 22px;
+    max-width: 22ch;
+}
+
+.about-text p {
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 18px;
+    font-size: 1.02rem;
+}
+
+.about-text p:last-child { margin-bottom: 0; }
+
+.about-card {
+    background: var(--ink);
+    color: var(--surface);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    position: sticky;
+    top: 24px;
+}
+
+.about-card-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: var(--surface);
+}
+
+.about-card-icon svg { width: 24px; height: 24px; }
+
+.about-card h3 {
+    color: var(--surface);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.about-card p {
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
+    font-size: 0.98rem;
+}
+
+/* second occurrence (Who Can Benefit) flips order + accent */
+.light-section .about-content .about-card {
+    background: var(--teal);
+    order: -1;
+}
+
+.light-section .about-content .about-card p { color: rgba(255, 255, 255, 0.85); }
+.light-section .about-content .about-card .about-card-icon { background: rgba(255, 255, 255, 0.18); }
+
+/* ---------- Steps (How it works) ---------- */
+
+.about-steps {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    position: relative;
+}
+
+.about-steps::before {
+    content: "";
+    position: absolute;
+    top: 27px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: repeating-linear-gradient(to right, var(--line) 0 8px, transparent 8px 14px);
+    z-index: 0;
+}
+
+.about-step { position: relative; z-index: 1; }
+
+.step-number {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--surface);
+    margin-bottom: 22px;
+    background: var(--coral);
+}
+
+.about-step:nth-child(2) .step-number { background: var(--amber); color: var(--ink); }
+.about-step:nth-child(3) .step-number { background: var(--teal); }
+.about-step:nth-child(4) .step-number { background: var(--violet); }
+
+.about-step h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.about-step p {
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.98rem;
+    max-width: 30ch;
+}
+
+/* ---------- Metric grid ---------- */
+
+.metric-grid {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.metric-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--coral);
+    border-radius: 10px;
+    padding: 26px 26px 24px;
+}
+
+.metric-card:nth-child(2) { border-left-color: var(--amber); }
+.metric-card:nth-child(3) { border-left-color: var(--teal); }
+.metric-card:nth-child(4) { border-left-color: var(--violet); }
+.metric-card:nth-child(5) { border-left-color: var(--coral); }
+.metric-card:nth-child(6) { border-left-color: var(--teal); }
+
+.metric-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    background: rgba(255, 100, 82, 0.12);
+    color: var(--coral-ink);
+}
+
+.metric-icon svg { width: 19px; height: 19px; }
+
+.metric-card:nth-child(2) .metric-icon { background: rgba(255, 178, 56, 0.16); color: var(--amber-ink); }
+.metric-card:nth-child(3) .metric-icon { background: rgba(6, 168, 139, 0.13); color: var(--teal-ink); }
+.metric-card:nth-child(4) .metric-icon { background: rgba(110, 86, 207, 0.13); color: var(--violet-ink); }
+.metric-card:nth-child(5) .metric-icon { background: rgba(255, 100, 82, 0.12); color: var(--coral-ink); }
+.metric-card:nth-child(6) .metric-icon { background: rgba(6, 168, 139, 0.13); color: var(--teal-ink); }
+
+.metric-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.metric-card p {
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ---------- CTA ---------- */
+
+.about-cta {
+    max-width: var(--max);
+    margin: 40px auto 80px;
+    background: var(--ink);
+    border-radius: 20px;
+    padding: 68px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(420px 220px at 12% 0%, rgba(6, 168, 139, 0.35), transparent 60%),
+        radial-gradient(420px 220px at 88% 100%, rgba(255, 100, 82, 0.3), transparent 60%);
+    pointer-events: none;
+}
+
+.about-cta > * { position: relative; }
+
+.cta-art {
+    position: absolute;
+    top: 26px;
+    right: 34px;
+    width: 84px;
+    height: 84px;
+    opacity: 0.16;
+    color: var(--surface);
+    pointer-events: none;
+}
+
+.about-cta span {
+    display: inline-block;
+    color: #B9F4E6;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 18px;
+}
+
+.about-cta h2 {
+    color: var(--surface);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600;
+    max-width: 20ch;
+    margin: 0 auto;
+}
+
+.about-cta p {
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 46ch;
+    margin: 18px auto 34px;
+    font-size: 1.02rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 13px 28px;
+    border-radius: 999px;
+    transition: transform 0.15s ease, background 0.15s ease;
+    display: inline-block;
+}
+
+.primary-button {
+    background: var(--coral);
+    color: var(--surface);
+}
+
+.primary-button:hover { background: #FF7B6B; transform: translateY(-1px); }
+
+.secondary-button {
+    background: transparent;
+    color: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.secondary-button:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
+
+/* ---------- Footer ---------- */
+
+.footer {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 32px 32px 48px;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+    .about-content { grid-template-columns: 1fr; }
+    .about-card { position: static; order: 0 !important; }
+    .about-steps { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+    .about-steps::before { display: none; }
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-intro-inner { grid-template-columns: 1fr; }
+    .hero-art { display: none; }
+}
+
+@media (max-width: 640px) {
+    .simple-nav { flex-wrap: wrap; padding: 20px; }
+    .simple-nav nav { order: 3; width: 100%; justify-content: flex-start; gap: 18px; flex-wrap: wrap; }
+    .about-section { padding: 56px 20px; }
+    .page-intro { padding: 50px 20px 60px; }
+    .about-steps { grid-template-columns: 1fr; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .about-cta { padding: 48px 24px; margin: 24px 16px 60px; }
+    .cta-buttons { flex-direction: column; }
+    .primary-button, .secondary-button { text-align: center; }
+}
