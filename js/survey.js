@@ -1,8 +1,3 @@
-﻿ // =========================================================
- // ShopPulse - Survey Engine
- // Supports standard platforms + custom "Other" platform
- // =========================================================
-
 const surveyForm = document.getElementById("surveyForm");
 const surveyMessage = document.getElementById("surveyMessage");
 
@@ -38,7 +33,7 @@ if (otherPlatformRadio && otherPlatformContainer) {
 
 if (surveyForm) {
 
-    surveyForm.addEventListener("submit", function (event) {
+    surveyForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -47,7 +42,6 @@ if (surveyForm) {
         let selectedPlatform =
             formData.get("shopping_platform");
 
-        // If Other is selected, use the custom platform name
         if (selectedPlatform === "Other") {
 
             const customPlatform =
@@ -71,8 +65,6 @@ if (surveyForm) {
         }
 
         const response = {
-
-            id: Date.now(),
 
             shopping_platform:
                 selectedPlatform,
@@ -104,50 +96,58 @@ if (surveyForm) {
             improvement_suggestions:
                 String(
                     formData.get("improvement_suggestions") || ""
-                ).trim(),
-
-            submitted_at:
-                new Date().toISOString()
+                ).trim()
         };
 
-        // Get existing responses
-        const responses = getSurveyResponses();
+        surveyMessage.className = "survey-message";
+        surveyMessage.textContent = "Submitting your response...";
 
-        // Add newest response
-        responses.push(response);
+        try {
 
-        // Save locally
-        saveSurveyResponses(responses);
+            const { data, error } =
+                await supabaseClient
+                    .from("survey_responses")
+                    .insert([response])
+                    .select();
 
-        // Show success message
-        surveyMessage.className =
-            "survey-message success";
+            if (error) {
+                throw error;
+            }
 
-        surveyMessage.textContent =
-            "✓ Thank you! Your survey response has been recorded successfully.";
+            surveyMessage.className =
+                "survey-message success";
 
-        // Reset the form
-        surveyForm.reset();
+            surveyMessage.textContent =
+                "? Thank you! Your survey response has been recorded successfully.";
 
-        // Hide Other field after reset
-        if (otherPlatformContainer) {
-            otherPlatformContainer.style.display = "none";
+            surveyForm.reset();
+
+            if (otherPlatformContainer) {
+                otherPlatformContainer.style.display = "none";
+            }
+
+            console.log(
+                "Survey response saved to Supabase:",
+                data
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Supabase submission error:",
+                error
+            );
+
+            surveyMessage.className =
+                "survey-message error";
+
+            surveyMessage.textContent =
+                "Sorry, we could not record your response. Please try again.";
         }
 
-        // Scroll to message
         surveyMessage.scrollIntoView({
             behavior: "smooth",
             block: "center"
         });
-
-        console.log(
-            "Survey response saved:",
-            response
-        );
-
-        console.log(
-            "Total responses:",
-            responses.length
-        );
     });
 }

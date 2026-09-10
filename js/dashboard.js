@@ -1,9 +1,4 @@
-﻿const responses = getSurveyResponses();
-
-const emptyState = document.getElementById("emptyState");
-const dashboard = document.getElementById("dashboard");
-
-let charts = {};
+﻿const charts = {};
 
 const standardPlatforms = [
     "Jumia",
@@ -15,63 +10,40 @@ const standardPlatforms = [
     "Oraimo"
 ];
 
-const platforms = [
-    ...new Set([
-        ...standardPlatforms,
-        ...responses
-            .map(response => response.shopping_platform)
-            .filter(platform => platform && platform.trim() !== "")
-    ])
-];
+async function getSupabaseResponses() {
+    try {
+        const { data, error } = await supabaseClient
+            .from("survey_responses")
+            .select("*")
+            .order("submitted_at", { ascending: false });
 
-function average(values) {
-    const valid = values.filter(value => !isNaN(value));
+        if (error) {
+            throw error;
+        }
 
-    if (!valid.length) return 0;
+        return data || [];
 
-    return valid.reduce((sum, value) => sum + value, 0) / valid.length;
+    } catch (error) {
+        console.error("Unable to load survey responses from Supabase:", error);
+        return [];
+    }
 }
 
-function ratingValue(value) {
-    return Number(value) || 0;
+function destroyChart(id) {
+    if (charts[id]) {
+        charts[id].destroy();
+        delete charts[id];
+    }
 }
 
-function platformResponses(platform) {
-    return responses.filter(
-        response => response.shopping_platform === platform
-    );
-}
-
-function platformAverage(platform, field) {
-    const data = platformResponses(platform);
-
-    return average(
-        data.map(response => ratingValue(response[field]))
-    );
-}
-
-function percentage(values, target) {
-    if (!values.length) return 0;
-
-    return (
-        values.filter(value => value === target).length /
-        values.length
-    ) * 100;
-}
-
-function destroyCharts() {
-    Object.values(charts).forEach(chart => {
-        if (chart) chart.destroy();
-    });
-
-    charts = {};
-}
-
-function createBarChart(id, labels, data, label) {
-
+function createBarChart(id, labels, data, label, max = 5) {
     const canvas = document.getElementById(id);
 
-    if (!canvas) return;
+    if (!canvas) {
+        return;
+    }
+
+    destroyChart(id);
 
     const barColors = [
         "#1f77b4",
@@ -88,301 +60,92 @@ function createBarChart(id, labels, data, label) {
 
     charts[id] = new Chart(canvas, {
         type: "bar",
+
         data: {
             labels: labels,
+
             datasets: [{
                 label: label,
+
                 data: data,
+
                 backgroundColor: labels.map(
-                    (_, index) => barColors[index % barColors.length]
+                    (_, index) =>
+                        barColors[index % barColors.length]
                 ),
+
                 borderColor: labels.map(
-                    (_, index) => barColors[index % barColors.length]
+                    (_, index) =>
+                        barColors[index % barColors.length]
                 ),
+
                 borderWidth: 1
             }]
         },
+
         options: {
             responsive: true,
             maintainAspectRatio: false,
+
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 5
+                    max: max
                 }
             }
         }
     });
 }
 
-function createRecommendationChart() {
-
-    const labels = platforms;
-
-    const data = platforms.map(platform => {
-
-        const platformData = platformResponses(platform);
-
-        if (!platformData.length) return 0;
-
-        return percentage(
-            platformData.map(item => item.recommendation),
-            "Yes"
-        );
-    });
-
-    const canvas = document.getElementById("recommendationChart");
-
-    if (!canvas) return;
-
-    const barColors = [
-        "#1f77b4",
-        "#ff7f0e",
-        "#2ca02c",
-        "#d62728",
-        "#9467bd",
-        "#8c564b",
-        "#e377c2",
-        "#17becf",
-        "#bcbd22",
-        "#7f7f7f"
-    ];
-
-    charts.recommendation = new Chart(canvas, {
-        type: "bar",
-        data: {
-            labels,
-            datasets: [{
-                label: "Recommendation Rate (%)",
-                data,
-                backgroundColor: labels.map(
-                    (_, index) => barColors[index % barColors.length]
-                ),
-                borderColor: labels.map(
-                    (_, index) => barColors[index % barColors.length]
-                ),
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
-                }
-            }
-        }
-    });
-}
-
-function createSpeedChart() {
-
-    const speedMap = {
-        "Very Fast": 5,
-        "Fast": 4,
-        "Average": 3,
-        "Slow": 2,
-        "Very Slow": 1
-    };
-
-    const data = platforms.map(platform => {
-
-        const values = platformResponses(platform)
-            .map(response => speedMap[response.delivery_speed])
-            .filter(value => value);
-
-        return average(values);
-    });
-
+function createRecommendationChart(id, labels, data) {
     createBarChart(
-        "speedChart",
-        platforms,
+        id,
+        labels,
         data,
-        "Delivery Speed Score"
-    );
-}
-
-function updateStats() {
-
-    document.getElementById("totalResponses").textContent =
-        responses.length;
-
-    const activePlatforms = platforms.filter(
-        platform => platformResponses(platform).length > 0
+        "Recommendation Rate",
+        100
     );
 
-    document.getElementById("platformCount").textContent =
-        activePlatforms.length;
-
-    const overallExperience = average(
-        responses.map(response =>
-            ratingValue(response.experience_rating)
-        )
-    );
-
-    document.getElementById("overallAverage").textContent =
-        overallExperience.toFixed(1);
-
-    const recommendationRate = percentage(
-        responses.map(response => response.recommendation),
-        "Yes"
-    );
-
-    document.getElementById("recommendationRate").textContent =
-        Math.round(recommendationRate) + "%";
-
-    const platformScores = activePlatforms.map(platform => ({
-        platform,
-        score: platformAverage(platform, "experience_rating")
-    }));
-
-    platformScores.sort((a, b) => b.score - a.score);
-
-    if (platformScores.length) {
-
-        const top = platformScores[0];
-
-        document.getElementById("topPlatform").textContent =
-            top.platform;
-
-        document.getElementById("topPlatformScore").textContent =
-            `${top.score.toFixed(1)} / 5 average experience rating`;
-    }
-}
-
-function updateHighlights() {
-
-    const metrics = [
-        {
-            name: "Customer Experience",
-            field: "experience_rating"
-        },
-        {
-            name: "Product Satisfaction",
-            field: "product_satisfaction"
-        },
-        {
-            name: "Delivery",
-            field: "delivery_rating"
-        },
-        {
-            name: "Customer Support",
-            field: "support_rating"
-        }
-    ];
-
-    const metricScores = metrics.map(metric => {
-
-        let values = [];
-
-        responses.forEach(response => {
-
-            if (metric.field === "product_satisfaction") {
-
-                const map = {
-                    "Very Satisfied": 5,
-                    "Satisfied": 4,
-                    "Neutral": 3,
-                    "Dissatisfied": 2,
-                    "Very Dissatisfied": 1
-                };
-
-                if (map[response.product_satisfaction]) {
-                    values.push(map[response.product_satisfaction]);
-                }
-
-            } else {
-
-                const value = ratingValue(response[metric.field]);
-
-                if (value) values.push(value);
+    if (charts[id]) {
+        charts[id].options.scales.y.ticks = {
+            callback: function(value) {
+                return value + "%";
             }
-        });
-
-        return {
-            name: metric.name,
-            score: average(values)
         };
-    });
 
-    metricScores.sort((a, b) => b.score - a.score);
-
-    if (metricScores.length) {
-
-        const strongest = metricScores[0];
-        const weakest = metricScores[metricScores.length - 1];
-
-        document.getElementById("strongestArea").textContent =
-            strongest.name;
-
-        document.getElementById("strongestAreaScore").textContent =
-            `${strongest.score.toFixed(1)} / 5 average score`;
-
-        document.getElementById("weakestArea").textContent =
-            weakest.name;
-
-        document.getElementById("weakestAreaScore").textContent =
-            `${weakest.score.toFixed(1)} / 5 average score`;
+        charts[id].update();
     }
 }
 
-function buildCharts() {
-
-    destroyCharts();
-
-    createBarChart(
-        "experienceChart",
-        platforms,
-        platforms.map(platform =>
-            platformAverage(platform, "experience_rating")
-        ),
-        "Average Experience"
+function calculateAverage(responses, field, platform) {
+    const filtered = responses.filter(response =>
+        response.shopping_platform === platform &&
+        Number(response[field]) > 0
     );
 
-    createBarChart(
-        "deliveryChart",
-        platforms,
-        platforms.map(platform =>
-            platformAverage(platform, "delivery_rating")
-        ),
-        "Average Delivery Rating"
+    if (!filtered.length) {
+        return 0;
+    }
+
+    const total = filtered.reduce(
+        (sum, response) =>
+            sum + Number(response[field]),
+        0
     );
 
-    const productMap = {
+    return Number(
+        (total / filtered.length).toFixed(2)
+    );
+}
+
+function calculateTextAverage(responses, field, platform) {
+    const values = {
         "Very Satisfied": 5,
         "Satisfied": 4,
         "Neutral": 3,
         "Dissatisfied": 2,
-        "Very Dissatisfied": 1
-    };
+        "Very Dissatisfied": 1,
 
-    createBarChart(
-        "productChart",
-        platforms,
-        platforms.map(platform =>
-            average(
-                platformResponses(platform)
-                    .map(response =>
-                        productMap[response.product_satisfaction]
-                    )
-                    .filter(value => value)
-            )
-        ),
-        "Product Satisfaction"
-    );
-
-    createBarChart(
-        "supportChart",
-        platforms,
-        platforms.map(platform =>
-            platformAverage(platform, "support_rating")
-        ),
-        "Support Rating"
-    );
-
-    const pricingMap = {
         "Very Fair": 5,
         "Fair": 4,
         "Neutral": 3,
@@ -390,348 +153,750 @@ function buildCharts() {
         "Very Unfair": 1
     };
 
-    createBarChart(
-        "pricingChart",
-        platforms,
-        platforms.map(platform =>
-            average(
-                platformResponses(platform)
-                    .map(response =>
-                        pricingMap[response.pricing_fairness]
-                    )
-                    .filter(value => value)
+    const filtered = responses
+        .filter(response =>
+            response.shopping_platform === platform &&
+            response[field]
+        )
+        .map(response =>
+            values[String(response[field]).trim()] || 0
+        )
+        .filter(value => value > 0);
+
+    if (!filtered.length) {
+        return 0;
+    }
+
+    const total = filtered.reduce(
+        (sum, value) => sum + value,
+        0
+    );
+
+    return Number(
+        (total / filtered.length).toFixed(2)
+    );
+}
+
+function calculateRecommendationRate(responses, platform) {
+    const filtered = responses.filter(
+        response =>
+            response.shopping_platform === platform
+    );
+
+    if (!filtered.length) {
+        return 0;
+    }
+
+    const recommended = filtered.filter(
+        response =>
+            String(response.recommendation || "")
+                .toLowerCase()
+                .includes("yes")
+    ).length;
+
+    return Number(
+        ((recommended / filtered.length) * 100).toFixed(1)
+    );
+}
+
+function calculateSpeedScore(responses, platform) {
+    const values = {
+        "Very Fast": 5,
+        "Fast": 4,
+        "Average": 3,
+        "Slow": 2,
+        "Very Slow": 1
+    };
+
+    const filtered = responses
+        .filter(response =>
+            response.shopping_platform === platform &&
+            response.delivery_speed
+        )
+        .map(response =>
+            values[String(response.delivery_speed).trim()] || 0
+        )
+        .filter(value => value > 0);
+
+    if (!filtered.length) {
+        return 0;
+    }
+
+    const total = filtered.reduce(
+        (sum, value) => sum + value,
+        0
+    );
+
+    return Number(
+        (total / filtered.length).toFixed(2)
+    );
+}
+
+function updateSummary(responses, platforms) {
+    const totalElement =
+        document.getElementById("totalResponses");
+
+    if (totalElement) {
+        totalElement.textContent = responses.length;
+    }
+
+    const platformElement =
+        document.getElementById("platformCount");
+
+    if (platformElement) {
+        const activePlatforms = platforms.filter(platform =>
+            responses.some(
+                response =>
+                    response.shopping_platform === platform
             )
-        ),
-        "Pricing Fairness"
-    );
-
-    createRecommendationChart();
-    createSpeedChart();
-}
-
-function buildComparisonTable() {
-
-    const tbody =
-        document.querySelector("#comparisonTable tbody");
-
-    tbody.innerHTML = "";
-
-    platforms.forEach(platform => {
-
-        const data = platformResponses(platform);
-
-        if (!data.length) return;
-
-        const recommendation = percentage(
-            data.map(item => item.recommendation),
-            "Yes"
         );
 
-        const productMap = {
-            "Very Satisfied": 5,
-            "Satisfied": 4,
-            "Neutral": 3,
-            "Dissatisfied": 2,
-            "Very Dissatisfied": 1
-        };
-
-        const pricingMap = {
-            "Very Fair": 5,
-            "Fair": 4,
-            "Neutral": 3,
-            "Unfair": 2,
-            "Very Unfair": 1
-        };
-
-        const product = average(
-            data.map(item => productMap[item.product_satisfaction])
-                .filter(value => value)
-        );
-
-        const pricing = average(
-            data.map(item => pricingMap[item.pricing_fairness])
-                .filter(value => value)
-        );
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td><strong>${platform}</strong></td>
-            <td>${data.length}</td>
-            <td>${platformAverage(platform, "experience_rating").toFixed(1)}</td>
-            <td>${product.toFixed(1)}</td>
-            <td>${platformAverage(platform, "delivery_rating").toFixed(1)}</td>
-            <td>${pricing.toFixed(1)}</td>
-            <td>${platformAverage(platform, "support_rating").toFixed(1)}</td>
-            <td>${Math.round(recommendation)}%</td>
-        `;
-
-        tbody.appendChild(row);
-    });
-}
-
-function generateInsights() {
-
-    const container =
-        document.getElementById("insightsList");
-
-    container.innerHTML = "";
-
-    if (!responses.length) return;
-
-    const activePlatforms = platforms.filter(
-        platform => platformResponses(platform).length
-    );
-
-    const scores = activePlatforms.map(platform => ({
-        platform,
-        score: platformAverage(platform, "experience_rating")
-    }));
-
-    scores.sort((a, b) => b.score - a.score);
-
-    if (scores.length >= 2) {
-
-        const best = scores[0];
-        const lowest = scores[scores.length - 1];
-
-        const difference =
-            best.score - lowest.score;
-
-        addInsight(
-            `📊 ${best.platform} has the highest average customer experience rating at ${best.score.toFixed(1)}/5, while ${lowest.platform} has the lowest at ${lowest.score.toFixed(1)}/5.`
-        );
-
-        if (difference >= 1) {
-
-            addInsight(
-                `The gap between the highest and lowest rated platforms is ${difference.toFixed(1)} points, indicating a noticeable difference in customer experience.`
-            );
-
-        } else {
-
-            addInsight(
-                "Customer experience ratings are relatively close across the platforms represented in the current data."
-            );
-        }
+        platformElement.textContent =
+            activePlatforms.length;
     }
 
-    const recommendationRate = percentage(
-        responses.map(response => response.recommendation),
-        "Yes"
-    );
+    const overallAverageElement =
+        document.getElementById("overallAverage");
 
-    if (recommendationRate >= 80) {
+    if (overallAverageElement) {
+        const ratings = responses
+            .map(response => Number(response.experience_rating))
+            .filter(value => value > 0);
 
-        addInsight(
-            `👍 ${Math.round(recommendationRate)}% of respondents would recommend their selected shopping platform.`
-        );
+        const average = ratings.length
+            ? ratings.reduce((sum, value) => sum + value, 0) /
+              ratings.length
+            : 0;
 
-    } else if (recommendationRate >= 50) {
-
-        addInsight(
-            `ℹ️ ${Math.round(recommendationRate)}% of respondents would recommend their selected shopping platform, suggesting generally positive but mixed feedback.`
-        );
-
-    } else {
-
-        addInsight(
-            `⚠️ Only ${Math.round(recommendationRate)}% of respondents would recommend their selected shopping platform, suggesting an opportunity to improve customer experience.`
-        );
+        overallAverageElement.textContent =
+            average.toFixed(1);
     }
 
-    const averages = [
+    const recommendationElement =
+        document.getElementById("recommendationRate");
+
+    if (recommendationElement) {
+        const recommended = responses.filter(
+            response =>
+                String(response.recommendation || "")
+                    .toLowerCase()
+                    .includes("yes")
+        ).length;
+
+        const rate = responses.length
+            ? (recommended / responses.length) * 100
+            : 0;
+
+        recommendationElement.textContent =
+            rate.toFixed(1) + "%";
+    }
+}
+
+function updateHighlights(responses, platforms) {
+    const platformScores = platforms
+        .map(platform => ({
+            platform,
+            score: calculateAverage(
+                responses,
+                "experience_rating",
+                platform
+            )
+        }))
+        .filter(item => item.score > 0);
+
+    const topPlatform = platformScores.sort(
+        (a, b) => b.score - a.score
+    )[0];
+
+    const topPlatformElement =
+        document.getElementById("topPlatform");
+
+    const topPlatformScoreElement =
+        document.getElementById("topPlatformScore");
+
+    if (topPlatform) {
+        topPlatformElement.textContent =
+            topPlatform.platform;
+
+        topPlatformScoreElement.textContent =
+            `${topPlatform.score.toFixed(2)} / 5 average experience rating`;
+    }
+
+    const areas = [
         {
             name: "Experience",
-            score: average(
-                responses.map(r => ratingValue(r.experience_rating))
-            )
+            field: "experience_rating",
+            numeric: true
         },
         {
             name: "Delivery",
-            score: average(
-                responses.map(r => ratingValue(r.delivery_rating))
-            )
+            field: "delivery_rating",
+            numeric: true
         },
         {
             name: "Support",
-            score: average(
-                responses.map(r => ratingValue(r.support_rating))
-            )
+            field: "support_rating",
+            numeric: true
+        },
+        {
+            name: "Product Satisfaction",
+            field: "product_satisfaction",
+            numeric: false
+        },
+        {
+            name: "Pricing Fairness",
+            field: "pricing_fairness",
+            numeric: false
         }
     ];
 
-    averages.sort((a, b) => b.score - a.score);
+    const areaScores = areas.map(area => {
+        const values = responses
+            .map(response => {
+                if (area.numeric) {
+                    return Number(response[area.field]);
+                }
 
-    addInsight(
-        `🔎 ${averages[0].name} is currently the strongest measured area with an average score of ${averages[0].score.toFixed(1)}/5.`
-    );
+                const valuesMap = {
+                    "Very Satisfied": 5,
+                    "Satisfied": 4,
+                    "Neutral": 3,
+                    "Dissatisfied": 2,
+                    "Very Dissatisfied": 1,
+                    "Very Fair": 5,
+                    "Fair": 4,
+                    "Unfair": 2,
+                    "Very Unfair": 1
+                };
 
-    addInsight(
-        `💡 These findings are based only on the responses currently stored in this browser and should be interpreted as sample feedback rather than a complete market-wide assessment.`
-    );
+                return valuesMap[
+                    String(response[area.field] || "").trim()
+                ] || 0;
+            })
+            .filter(value => value > 0);
+
+        const average = values.length
+            ? values.reduce((sum, value) => sum + value, 0) /
+              values.length
+            : 0;
+
+        return {
+            name: area.name,
+            score: average
+        };
+    }).filter(area => area.score > 0);
+
+    if (areaScores.length) {
+        const strongest = [...areaScores].sort(
+            (a, b) => b.score - a.score
+        )[0];
+
+        const weakest = [...areaScores].sort(
+            (a, b) => a.score - b.score
+        )[0];
+
+        const strongestElement =
+            document.getElementById("strongestArea");
+
+        const strongestScoreElement =
+            document.getElementById("strongestAreaScore");
+
+        const weakestElement =
+            document.getElementById("weakestArea");
+
+        const weakestScoreElement =
+            document.getElementById("weakestAreaScore");
+
+        if (strongestElement) {
+            strongestElement.textContent =
+                strongest.name;
+        }
+
+        if (strongestScoreElement) {
+            strongestScoreElement.textContent =
+                `${strongest.score.toFixed(2)} / 5 average score`;
+        }
+
+        if (weakestElement) {
+            weakestElement.textContent =
+                weakest.name;
+        }
+
+        if (weakestScoreElement) {
+            weakestScoreElement.textContent =
+                `${weakest.score.toFixed(2)} / 5 average score`;
+        }
+    }
 }
 
-function addInsight(text) {
+function updateComparisonTable(responses, platforms) {
+    const tableBody =
+        document.querySelector("#comparisonTable tbody");
 
-    const item = document.createElement("div");
-
-    item.className = "insight-item";
-
-    item.textContent = text;
-
-    document
-        .getElementById("insightsList")
-        .appendChild(item);
-}
-
-function downloadCSV() {
-
-    if (!responses.length) return;
-
-    const headers = [
-        "Platform",
-        "Experience Rating",
-        "Product Satisfaction",
-        "Delivery Rating",
-        "Recommendation",
-        "Shopping Frequency",
-        "Pricing Fairness",
-        "Support Rating",
-        "Delivery Speed",
-        "Improvement Suggestions",
-        "Submitted At"
-    ];
-
-    const rows = responses.map(response => [
-        response.shopping_platform,
-        response.experience_rating,
-        response.product_satisfaction,
-        response.delivery_rating,
-        response.recommendation,
-        response.shopping_frequency,
-        response.pricing_fairness,
-        response.support_rating,
-        response.delivery_speed,
-        response.improvement_suggestions,
-        response.submitted_at
-    ]);
-
-    const csv = [
-        headers,
-        ...rows
-    ]
-    .map(row =>
-        row.map(value =>
-            `"${String(value ?? "").replace(/"/g, '""')}"`
-        ).join(",")
-    )
-    .join("\n");
-
-    const blob = new Blob(
-        [csv],
-        { type: "text/csv;charset=utf-8;" }
-    );
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "shoppulse_survey_results.csv";
-
-    link.click();
-
-    URL.revokeObjectURL(url);
-}
-
-function downloadExcel() {
-
-    if (!responses.length) return;
-
-    let rows = `
-        <table border="1">
-            <tr>
-                <th>Platform</th>
-                <th>Experience Rating</th>
-                <th>Product Satisfaction</th>
-                <th>Delivery Rating</th>
-                <th>Recommendation</th>
-                <th>Shopping Frequency</th>
-                <th>Pricing Fairness</th>
-                <th>Support Rating</th>
-                <th>Delivery Speed</th>
-                <th>Improvement Suggestions</th>
-                <th>Submitted At</th>
-            </tr>
-    `;
-
-    responses.forEach(response => {
-
-        rows += `
-            <tr>
-                <td>${response.shopping_platform}</td>
-                <td>${response.experience_rating}</td>
-                <td>${response.product_satisfaction}</td>
-                <td>${response.delivery_rating}</td>
-                <td>${response.recommendation}</td>
-                <td>${response.shopping_frequency}</td>
-                <td>${response.pricing_fairness}</td>
-                <td>${response.support_rating}</td>
-                <td>${response.delivery_speed}</td>
-                <td>${response.improvement_suggestions}</td>
-                <td>${response.submitted_at}</td>
-            </tr>
-        `;
-    });
-
-    rows += "</table>";
-
-    const blob = new Blob(
-        [rows],
-        { type: "application/vnd.ms-excel" }
-    );
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "shoppulse_survey_report.xls";
-
-    link.click();
-
-    URL.revokeObjectURL(url);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    if (!responses.length) {
-
-        emptyState.style.display = "block";
-        dashboard.style.display = "none";
-
+    if (!tableBody) {
         return;
     }
 
-    emptyState.style.display = "none";
-    dashboard.style.display = "block";
+    tableBody.innerHTML = "";
 
-    updateStats();
-    updateHighlights();
-    buildCharts();
-    buildComparisonTable();
-    generateInsights();
+    platforms.forEach(platform => {
+        const platformResponses =
+            responses.filter(
+                response =>
+                    response.shopping_platform === platform
+            );
 
-    document
-        .getElementById("csvButton")
-        .addEventListener("click", downloadCSV);
+        const row =
+            document.createElement("tr");
 
-    document
-        .getElementById("excelButton")
-        .addEventListener("click", downloadExcel);
-});
+        const experience =
+            calculateAverage(
+                responses,
+                "experience_rating",
+                platform
+            );
 
+        const product =
+            calculateTextAverage(
+                responses,
+                "product_satisfaction",
+                platform
+            );
 
+        const delivery =
+            calculateAverage(
+                responses,
+                "delivery_rating",
+                platform
+            );
 
+        const pricing =
+            calculateTextAverage(
+                responses,
+                "pricing_fairness",
+                platform
+            );
 
+        const support =
+            calculateAverage(
+                responses,
+                "support_rating",
+                platform
+            );
+
+        const recommendation =
+            calculateRecommendationRate(
+                responses,
+                platform
+            );
+
+        row.innerHTML = `
+            <td>${platform}</td>
+            <td>${platformResponses.length}</td>
+            <td>${experience || "—"}</td>
+            <td>${product || "—"}</td>
+            <td>${delivery || "—"}</td>
+            <td>${pricing || "—"}</td>
+            <td>${support || "—"}</td>
+            <td>${recommendation}%</td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
+function updateInsights(responses, platforms) {
+    const container =
+        document.getElementById("insightsList");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    if (!responses.length) {
+        return;
+    }
+
+    const insights = [];
+
+    const platformCounts = platforms
+        .map(platform => ({
+            platform,
+            count: responses.filter(
+                response =>
+                    response.shopping_platform === platform
+            ).length
+        }))
+        .filter(item => item.count > 0)
+        .sort((a, b) => b.count - a.count);
+
+    if (platformCounts.length) {
+        insights.push(
+            `${platformCounts[0].platform} has the highest number of responses with ${platformCounts[0].count} response${platformCounts[0].count === 1 ? "" : "s"}.`
+        );
+    }
+
+    const experienceRatings = responses
+        .map(response => Number(response.experience_rating))
+        .filter(value => value > 0);
+
+    if (experienceRatings.length) {
+        const average =
+            experienceRatings.reduce(
+                (sum, value) => sum + value,
+                0
+            ) / experienceRatings.length;
+
+        insights.push(
+            `The overall customer experience rating is ${average.toFixed(2)} out of 5.`
+        );
+    }
+
+    const recommended =
+        responses.filter(response =>
+            String(response.recommendation || "")
+                .toLowerCase()
+                .includes("yes")
+        ).length;
+
+    const recommendationRate =
+        (recommended / responses.length) * 100;
+
+    insights.push(
+        `${recommendationRate.toFixed(1)}% of respondents would recommend their selected shopping platform.`
+    );
+
+    const speedValues = {
+        "Very Fast": 5,
+        "Fast": 4,
+        "Average": 3,
+        "Slow": 2,
+        "Very Slow": 1
+    };
+
+    const speeds = responses
+        .map(response =>
+            speedValues[
+                String(response.delivery_speed || "").trim()
+            ] || 0
+        )
+        .filter(value => value > 0);
+
+    if (speeds.length) {
+        const averageSpeed =
+            speeds.reduce(
+                (sum, value) => sum + value,
+                0
+            ) / speeds.length;
+
+        let description = "average";
+
+        if (averageSpeed >= 4) {
+            description = "generally fast";
+        } else if (averageSpeed <= 2) {
+            description = "generally slow";
+        }
+
+        insights.push(
+            `Delivery speed responses indicate that delivery is ${description} overall.`
+        );
+    }
+
+    insights.forEach(text => {
+        const item =
+            document.createElement("div");
+
+        item.className = "insight-item";
+
+        item.textContent = text;
+
+        container.appendChild(item);
+    });
+}
+
+function showDashboard(responses) {
+    const emptyState =
+        document.getElementById("emptyState");
+
+    const dashboard =
+        document.getElementById("dashboard");
+
+    if (responses.length > 0) {
+        if (emptyState) {
+            emptyState.style.display = "none";
+        }
+
+        if (dashboard) {
+            dashboard.style.display = "block";
+        }
+    } else {
+        if (emptyState) {
+            emptyState.style.display = "block";
+        }
+
+        if (dashboard) {
+            dashboard.style.display = "none";
+        }
+    }
+}
+
+function setupExportButtons(responses) {
+    const csvButton =
+        document.getElementById("csvButton");
+
+    if (csvButton) {
+        csvButton.onclick = function() {
+            if (!responses.length) {
+                alert("There are no responses to export.");
+                return;
+            }
+
+            const headers = [
+                "Platform",
+                "Experience Rating",
+                "Product Satisfaction",
+                "Delivery Rating",
+                "Recommendation",
+                "Shopping Frequency",
+                "Pricing Fairness",
+                "Support Rating",
+                "Delivery Speed",
+                "Improvement Suggestions",
+                "Submitted At"
+            ];
+
+            const rows = responses.map(response => [
+                response.shopping_platform,
+                response.experience_rating,
+                response.product_satisfaction,
+                response.delivery_rating,
+                response.recommendation,
+                response.shopping_frequency,
+                response.pricing_fairness,
+                response.support_rating,
+                response.delivery_speed,
+                response.improvement_suggestions,
+                response.submitted_at
+            ]);
+
+            const csv = [
+                headers,
+                ...rows
+            ]
+                .map(row =>
+                    row.map(value =>
+                        `"${String(value ?? "")
+                            .replace(/"/g, '""')}"`
+                    ).join(",")
+                )
+                .join("\n");
+
+            const blob =
+                new Blob([csv], {
+                    type: "text/csv;charset=utf-8;"
+                });
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+            link.download =
+                "shoppulse-survey-responses.csv";
+
+            link.click();
+
+            URL.revokeObjectURL(url);
+        };
+    }
+
+    const excelButton =
+        document.getElementById("excelButton");
+
+    if (excelButton) {
+        excelButton.onclick = function() {
+            alert(
+                "Excel export is not available in the browser-only version yet. Use Download CSV for now."
+            );
+        };
+    }
+}
+
+async function initializeDashboard() {
+    console.log("Loading shared responses from Supabase...");
+
+    const responses =
+        await getSupabaseResponses();
+
+    console.log(
+        "Total shared responses:",
+        responses.length
+    );
+
+    const platforms = [
+        ...new Set([
+            ...standardPlatforms,
+
+            ...responses
+                .map(
+                    response =>
+                        response.shopping_platform
+                )
+                .filter(
+                    platform =>
+                        platform &&
+                        platform.trim() !== ""
+                )
+        ])
+    ];
+
+    showDashboard(responses);
+
+    updateSummary(
+        responses,
+        platforms
+    );
+
+    updateHighlights(
+        responses,
+        platforms
+    );
+
+    updateComparisonTable(
+        responses,
+        platforms
+    );
+
+    updateInsights(
+        responses,
+        platforms
+    );
+
+    const experienceData =
+        platforms.map(platform =>
+            calculateAverage(
+                responses,
+                "experience_rating",
+                platform
+            )
+        );
+
+    const deliveryData =
+        platforms.map(platform =>
+            calculateAverage(
+                responses,
+                "delivery_rating",
+                platform
+            )
+        );
+
+    const productData =
+        platforms.map(platform =>
+            calculateTextAverage(
+                responses,
+                "product_satisfaction",
+                platform
+            )
+        );
+
+    const pricingData =
+        platforms.map(platform =>
+            calculateTextAverage(
+                responses,
+                "pricing_fairness",
+                platform
+            )
+        );
+
+    const supportData =
+        platforms.map(platform =>
+            calculateAverage(
+                responses,
+                "support_rating",
+                platform
+            )
+        );
+
+    const recommendationData =
+        platforms.map(platform =>
+            calculateRecommendationRate(
+                responses,
+                platform
+            )
+        );
+
+    const speedData =
+        platforms.map(platform =>
+            calculateSpeedScore(
+                responses,
+                platform
+            )
+        );
+
+    createBarChart(
+        "experienceChart",
+        platforms,
+        experienceData,
+        "Average Experience Rating"
+    );
+
+    createBarChart(
+        "deliveryChart",
+        platforms,
+        deliveryData,
+        "Average Delivery Rating"
+    );
+
+    createBarChart(
+        "productChart",
+        platforms,
+        productData,
+        "Average Product Satisfaction"
+    );
+
+    createBarChart(
+        "pricingChart",
+        platforms,
+        pricingData,
+        "Average Pricing Fairness"
+    );
+
+    createBarChart(
+        "supportChart",
+        platforms,
+        supportData,
+        "Average Support Rating"
+    );
+
+    createRecommendationChart(
+        "recommendationChart",
+        platforms,
+        recommendationData
+    );
+
+    createBarChart(
+        "speedChart",
+        platforms,
+        speedData,
+        "Average Delivery Speed",
+        5
+    );
+
+    setupExportButtons(responses);
+
+    console.log(
+        "ShopPulse dashboard successfully loaded from Supabase."
+    );
+}
+
+if (typeof supabaseClient !== "undefined") {
+    initializeDashboard();
+} else {
+    console.error(
+        "Supabase client is not available."
+    );
+}
