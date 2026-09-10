@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopPulse | About</title>
     <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        /* =========================
+           SHOPPING HERO ART
+        ========================== */
+
+        .shopping-art {
+            position: relative;
+            width: 360px;
+            height: 230px;
+            margin: auto;
+        }
+
+        .shopping-item {
+            position: absolute;
+            width: 58px;
+            height: 58px;
+            padding: 12px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 10px 25px rgba(15,28,46,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .shopping-item:hover {
+            transform: translateY(-6px) rotate(3deg);
+        }
+
+        .shopping-item svg {
+            width: 34px;
+            height: 34px;
+        }
+
+        .item-shoe {
+            left: 35px;
+            top: 35px;
+            transform: rotate(-8deg);
+        }
+
+        .item-shirt {
+            left: 145px;
+            top: 10px;
+            transform: rotate(5deg);
+        }
+
+        .item-bag {
+            right: 25px;
+            top: 48px;
+            transform: rotate(-5deg);
+        }
+
+        .item-food {
+            left: 85px;
+            bottom: 25px;
+            transform: rotate(6deg);
+        }
+
+        .item-watch {
+            right: 90px;
+            bottom: 10px;
+            transform: rotate(-7deg);
+        }
+
+        .item-accessory {
+            right: 5px;
+            bottom: 75px;
+            transform: rotate(8deg);
+        }
+
+        .shopping-dots {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FFB238;
+        }
+
+        .dot-one {
+            left: 10px;
+            top: 100px;
+        }
+
+        .dot-two {
+            right: 15px;
+            top: 15px;
+            background: #6E56CF;
+        }
+
+        .dot-three {
+            left: 180px;
+            bottom: 0;
+            background: #06A88B;
+        }
+
+        /* =========================
+           SMALL FEATURE ICONS
+        ========================== */
+
+        .mini-shopping-icons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .mini-shopping-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #f7f8fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-shopping-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* =========================
+           SHOPPING CATEGORY CARDS
+        ========================== */
+
+        .shopping-category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 35px;
+        }
+
+        .shopping-category {
+            padding: 22px 15px;
+            text-align: center;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(15,28,46,0.07);
+            transition: transform 0.25s ease;
+        }
+
+        .shopping-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .shopping-category-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f6fa;
+        }
+
+        .shopping-category-icon svg {
+            width: 29px;
+            height: 29px;
+        }
+
+        .shopping-category h3 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .shopping-category p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 800px) {
+            .shopping-art {
+                width: 300px;
+                transform: scale(0.85);
+            }
+
+            .shopping-category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .shopping-art {
+                transform: scale(0.72);
+                margin-left: -15px;
+            }
+
+            .shopping-category-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
 <header class="simple-nav">
     <a href="index.html" class="simple-logo">ShopPulse</a>
+
     <nav>
         <a href="index.html">Home</a>
         <a href="survey.html">Survey</a>
@@ -17,60 +221,176 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
     </nav>
+
     <a href="login.html" class="nav-login">Login</a>
 </header>
 
 
-
 <main>
 
+    <!-- =========================
+         HERO
+    ========================== -->
+
     <section class="page-intro">
+
         <div class="page-intro-inner">
+
             <div>
                 <span>ABOUT SHOPPULSE</span>
-                <h1>Understanding Shopping Experiences Through Data</h1>
+
+                <h1>
+                    Understanding Shopping Experiences Through Data
+                </h1>
+
                 <p>
-                    ShopPulse is a comparative customer feedback analytics platform
-                    designed to turn shopping experiences into meaningful insights.
+                    ShopPulse is a comparative customer feedback analytics
+                    platform designed to turn shopping experiences into
+                    meaningful insights.
                 </p>
+
+                <div class="mini-shopping-icons">
+
+                    <!-- Shoe -->
+                    <div class="mini-shopping-icon">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 17c3 0 5-2 7-6l3 3c2 2 4 2 8 2v4H3z"/>
+                            <path d="M10 11l2 2"/>
+                        </svg>
+                    </div>
+
+                    <!-- Shirt -->
+                    <div class="mini-shopping-icon">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 4l4 2 4-2 4 3-3 4-2-2v11H9V9l-2 2-3-4z"/>
+                        </svg>
+                    </div>
+
+                    <!-- Shopping Bag -->
+                    <div class="mini-shopping-icon">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 8h14l-1 12H6L5 8z"/>
+                            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+                        </svg>
+                    </div>
+
+                    <!-- Food -->
+                    <div class="mini-shopping-icon">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 3v8"/>
+                            <path d="M3 3v5a2 2 0 0 0 4 0V3"/>
+                            <path d="M5 10v11"/>
+                            <path d="M14 3v18"/>
+                            <path d="M14 3c4 1 5 5 0 7"/>
+                        </svg>
+                    </div>
+
+                </div>
             </div>
 
-            <svg class="hero-art" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <!-- back bag: amber -->
-                <g transform="translate(40,60) rotate(-9)">
-                    <path d="M4 34h110l-9 96H13L4 34z" fill="#FFB238" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
-                    <path d="M28 34V20a31 31 0 0 1 62 0v14" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
-                </g>
-                <!-- middle bag: violet -->
-                <g transform="translate(150,90) rotate(7)">
-                    <path d="M6 40h132l-11 114H16L6 40z" fill="#6E56CF" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
-                    <path d="M34 40V24a37 37 0 0 1 74 0v16" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round"/>
-                    <circle cx="72" cy="90" r="15" fill="#FFFFFF" fill-opacity="0.85"/>
-                    <path d="M64 90l6 6 12-13" fill="none" stroke="#6E56CF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <!-- front bag: teal -->
-                <g transform="translate(255,45) rotate(-5)">
-                    <path d="M8 46h122l-10 106H18L8 46z" fill="#06A88B" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
-                    <path d="M34 46V30a35 35 0 0 1 70 0v16" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round"/>
-                </g>
-                <!-- coral price tag, tucked bottom-left -->
-                <g transform="translate(30,215) rotate(-16)">
-                    <path d="M2 2h34l24 24-24 24-34-34z" transform="translate(0,-2)" fill="#FF6452" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
-                    <circle cx="16" cy="10" r="4" fill="#FFFFFF" fill-opacity="0.85"/>
-                </g>
-                <polyline points="20,272 90,272 108,248 126,290 144,262 160,272 400,272" fill="none" stroke="#0F1C2E" stroke-opacity="0.18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+
+            <!-- Small Shopping Illustration -->
+
+            <div class="shopping-art">
+
+                <div class="shopping-dots dot-one"></div>
+                <div class="shopping-dots dot-two"></div>
+                <div class="shopping-dots dot-three"></div>
+
+                <!-- Shoe -->
+                <div class="shopping-item item-shoe">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#6E56CF" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 17c3 0 5-2 7-6l3 3c2 2 4 2 8 2v4H3z"/>
+                        <path d="M10 11l2 2"/>
+                    </svg>
+                </div>
+
+                <!-- Shirt -->
+                <div class="shopping-item item-shirt">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#06A88B" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 4l4 2 4-2 4 3-3 4-2-2v11H9V9l-2 2-3-4z"/>
+                    </svg>
+                </div>
+
+                <!-- Bag -->
+                <div class="shopping-item item-bag">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#FFB238" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 8h14l-1 12H6L5 8z"/>
+                        <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+                    </svg>
+                </div>
+
+                <!-- Food -->
+                <div class="shopping-item item-food">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#FF6452" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 3v8"/>
+                        <path d="M3 3v5a2 2 0 0 0 4 0V3"/>
+                        <path d="M5 10v11"/>
+                        <path d="M14 3v18"/>
+                        <path d="M14 3c4 1 5 5 0 7"/>
+                    </svg>
+                </div>
+
+                <!-- Watch / Accessory -->
+                <div class="shopping-item item-watch">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#6E56CF" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="7"/>
+                        <path d="M12 9v3l2 2"/>
+                        <path d="M9 2h6"/>
+                        <path d="M9 22h6"/>
+                    </svg>
+                </div>
+
+                <!-- Accessory -->
+                <div class="shopping-item item-accessory">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#FF6452" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M6 21c0-4 2-6 6-6s6 2 6 6"/>
+                    </svg>
+                </div>
+
+            </div>
+
         </div>
+
     </section>
+
+
+    <!-- =========================
+         PURPOSE
+    ========================== -->
 
     <section class="about-section">
 
         <div class="about-content">
 
             <div class="about-text">
+
                 <span>OUR PURPOSE</span>
 
-                <h2>One Place to Compare Customer Experiences</h2>
+                <h2>
+                    One Place to Compare Customer Experiences
+                </h2>
 
                 <p>
                     Customers use different shopping platforms every day,
@@ -91,34 +411,155 @@
                     easier to identify patterns, strengths and areas that
                     may need improvement.
                 </p>
+
             </div>
 
+
             <div class="about-card">
+
                 <div class="about-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 4v15a1 1 0 0 0 1 1h15"/>
                         <line x1="8" y1="17" x2="8" y2="11"/>
                         <line x1="13" y1="17" x2="13" y2="7"/>
                         <line x1="18" y1="17" x2="18" y2="13"/>
                     </svg>
                 </div>
+
                 <h3>From Feedback to Insight</h3>
+
                 <p>
                     Customer responses become structured data that can be
                     compared, visualized and interpreted.
                 </p>
+
             </div>
 
         </div>
 
     </section>
 
+
+    <!-- =========================
+         SHOPPING CATEGORIES
+    ========================== -->
+
     <section class="about-section light-section">
 
         <div class="section-heading">
-            <span>HOW IT WORKS</span>
-            <h2>From Customer Experience to Clear Comparisons</h2>
+
+            <span>SHOPPING EXPERIENCES</span>
+
+            <h2>
+                What Customers Shop For
+            </h2>
+
+            <p>
+                ShopPulse can capture customer experiences across different
+                shopping categories.
+            </p>
+
         </div>
+
+
+        <div class="shopping-category-grid">
+
+            <!-- Clothes -->
+            <div class="shopping-category">
+
+                <div class="shopping-category-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#6E56CF" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 4l4 2 4-2 4 3-3 4-2-2v11H9V9l-2 2-3-4z"/>
+                    </svg>
+                </div>
+
+                <h3>Clothing</h3>
+                <p>Fashion & apparel</p>
+
+            </div>
+
+
+            <!-- Shoes -->
+            <div class="shopping-category">
+
+                <div class="shopping-category-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#06A88B" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 17c3 0 5-2 7-6l3 3c2 2 4 2 8 2v4H3z"/>
+                        <path d="M10 11l2 2"/>
+                    </svg>
+                </div>
+
+                <h3>Shoes</h3>
+                <p>Footwear & sneakers</p>
+
+            </div>
+
+
+            <!-- Accessories -->
+            <div class="shopping-category">
+
+                <div class="shopping-category-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#FF6452" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M6 21c0-4 2-6 6-6s6 2 6 6"/>
+                    </svg>
+                </div>
+
+                <h3>Accessories</h3>
+                <p>Bags, watches & more</p>
+
+            </div>
+
+
+            <!-- Food -->
+            <div class="shopping-category">
+
+                <div class="shopping-category-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="#FFB238" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 3v8"/>
+                        <path d="M3 3v5a2 2 0 0 0 4 0V3"/>
+                        <path d="M5 10v11"/>
+                        <path d="M14 3v18"/>
+                        <path d="M14 3c4 1 5 5 0 7"/>
+                    </svg>
+                </div>
+
+                <h3>Food</h3>
+                <p>Groceries & meals</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOW IT WORKS
+    ========================== -->
+
+    <section class="about-section">
+
+        <div class="section-heading">
+
+            <span>HOW IT WORKS</span>
+
+            <h2>
+                From Customer Experience to Clear Comparisons
+            </h2>
+
+        </div>
+
 
         <div class="about-steps">
 
@@ -162,113 +603,105 @@
 
     </section>
 
-    <section class="about-section">
+
+    <!-- =========================
+         WHAT WE MEASURE
+    ========================== -->
+
+    <section class="about-section light-section">
 
         <div class="section-heading">
+
             <span>WHAT WE MEASURE</span>
-            <h2>Key Customer Experience Areas</h2>
+
+            <h2>
+                Key Customer Experience Areas
+            </h2>
+
         </div>
+
 
         <div class="metric-grid">
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 17l-5.6 3.1 1.4-6.3L3 9.5l6.4-.6L12 3z"/>
-                    </svg>
-                </div>
-                <h3>Overall Experience</h3>
-                <p>How customers rate their overall shopping experience.</p>
+                <h3>⭐ Overall Experience</h3>
+                <p>
+                    How customers rate their overall shopping experience.
+                </p>
             </div>
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 3 4 7v10l8 4 8-4V7z"/>
-                        <path d="M4 7l8 4 8-4"/>
-                        <line x1="12" y1="11" x2="12" y2="21"/>
-                    </svg>
-                </div>
-                <h3>Product Satisfaction</h3>
-                <p>How satisfied customers are with the products they receive.</p>
+                <h3>📦 Product Satisfaction</h3>
+                <p>
+                    How satisfied customers are with the products they receive.
+                </p>
             </div>
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="2" y="9" width="11" height="7"/>
-                        <path d="M13 12h4l3.2 3.2V16H13z"/>
-                        <circle cx="6.5" cy="18" r="1.6"/>
-                        <circle cx="16.5" cy="18" r="1.6"/>
-                    </svg>
-                </div>
-                <h3>Delivery</h3>
-                <p>Customer perception of delivery quality and speed.</p>
+                <h3>🚚 Delivery</h3>
+                <p>
+                    Customer perception of delivery quality and speed.
+                </p>
             </div>
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M3 11V4h7l10 10-7 7L3 11z"/>
-                        <circle cx="7.5" cy="7.5" r="1.3" fill="currentColor" stroke="none"/>
-                    </svg>
-                </div>
-                <h3>Pricing</h3>
-                <p>Whether customers consider prices fair and reasonable.</p>
+                <h3>🏷️ Pricing</h3>
+                <p>
+                    Whether customers consider prices fair and reasonable.
+                </p>
             </div>
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M4 13a8 8 0 0 1 16 0"/>
-                        <rect x="3" y="13" width="4" height="6" rx="1.5"/>
-                        <rect x="17" y="13" width="4" height="6" rx="1.5"/>
-                        <path d="M19 19v1a3 3 0 0 1-3 3h-2"/>
-                    </svg>
-                </div>
-                <h3>Customer Support</h3>
-                <p>How customers evaluate the support they receive.</p>
+                <h3>🎧 Customer Support</h3>
+                <p>
+                    How customers evaluate the support they receive.
+                </p>
             </div>
 
             <div class="metric-card">
-                <div class="metric-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M7 11v9H4v-9h3z"/>
-                        <path d="M7 11l4-7c1 0 2 1 2 2v4h5a2 2 0 0 1 2 2l-1.5 6a2 2 0 0 1-2 1.5H7"/>
-                    </svg>
-                </div>
-                <h3>Recommendation</h3>
-                <p>Whether customers would recommend their shopping platform.</p>
+                <h3>👍 Recommendation</h3>
+                <p>
+                    Whether customers would recommend their shopping platform.
+                </p>
             </div>
 
         </div>
 
     </section>
 
-    <section class="about-section light-section">
+
+    <!-- =========================
+         WHY IT MATTERS
+    ========================== -->
+
+    <section class="about-section">
 
         <div class="about-content">
 
             <div class="about-card">
+
                 <div class="about-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M9 18h6"/>
-                        <path d="M10 21h4"/>
-                        <path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2h5a2.7 2.7 0 0 1 1.1-2A6 6 0 0 0 12 3z"/>
-                    </svg>
+                    💡
                 </div>
+
                 <h3>Who Can Benefit?</h3>
+
                 <p>
                     The insights can support consumers, researchers, students,
                     small businesses and online sellers who want to better
                     understand customer expectations.
                 </p>
+
             </div>
 
+
             <div class="about-text">
+
                 <span>WHY IT MATTERS</span>
 
-                <h2>Better Understanding Leads to Better Decisions</h2>
+                <h2>
+                    Better Understanding Leads to Better Decisions
+                </h2>
 
                 <p>
                     For consumers, comparative feedback can provide a broader
@@ -287,22 +720,25 @@
                     analytics project based on the customer responses collected
                     through the platform.
                 </p>
+
             </div>
 
         </div>
 
     </section>
 
-    <section class="about-cta">
 
-        <svg class="cta-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-            <path d="M6 8h12l-1 12H7L6 8z"/>
-            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
-        </svg>
+    <!-- =========================
+         CTA
+    ========================== -->
+
+    <section class="about-cta">
 
         <span>EXPLORE THE DATA</span>
 
-        <h2>Ready to Compare Shopping Experiences?</h2>
+        <h2>
+            Ready to Compare Shopping Experiences?
+        </h2>
 
         <p>
             Share a shopping experience or explore the comparative analytics
@@ -310,19 +746,31 @@
         </p>
 
         <div class="cta-buttons">
-            <a href="survey.html" class="primary-button">Take the Survey</a>
-            <a href="results.html" class="secondary-button">View Analytics</a>
+
+            <a href="survey.html" class="primary-button">
+                Take the Survey
+            </a>
+
+            <a href="results.html" class="secondary-button">
+                View Analytics
+            </a>
+
         </div>
 
     </section>
 
 </main>
 
+
 <footer class="footer">
-    <p>&copy; 2026 ShopPulse — Comparative Customer Feedback Analytics</p>
+    <p>
+        &copy; 2026 ShopPulse — Comparative Customer Feedback Analytics
+    </p>
 </footer>
+
 
 <script src="js/app.js"></script>
 
 </body>
 </html>
+```
