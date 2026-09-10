@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,12 +25,42 @@
 <main>
 
     <section class="page-intro">
-        <span>ABOUT SHOPPULSE</span>
-        <h1>Understanding Shopping Experiences Through Data</h1>
-        <p>
-            ShopPulse is a comparative customer feedback analytics platform
-            designed to turn shopping experiences into meaningful insights.
-        </p>
+        <div class="page-intro-inner">
+            <div>
+                <span>ABOUT SHOPPULSE</span>
+                <h1>Understanding Shopping Experiences Through Data</h1>
+                <p>
+                    ShopPulse is a comparative customer feedback analytics platform
+                    designed to turn shopping experiences into meaningful insights.
+                </p>
+            </div>
+
+            <svg class="hero-art" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- back bag: amber -->
+                <g transform="translate(40,60) rotate(-9)">
+                    <path d="M4 34h110l-9 96H13L4 34z" fill="#FFB238" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
+                    <path d="M28 34V20a31 31 0 0 1 62 0v14" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
+                </g>
+                <!-- middle bag: violet -->
+                <g transform="translate(150,90) rotate(7)">
+                    <path d="M6 40h132l-11 114H16L6 40z" fill="#6E56CF" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
+                    <path d="M34 40V24a37 37 0 0 1 74 0v16" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round"/>
+                    <circle cx="72" cy="90" r="15" fill="#FFFFFF" fill-opacity="0.85"/>
+                    <path d="M64 90l6 6 12-13" fill="none" stroke="#6E56CF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <!-- front bag: teal -->
+                <g transform="translate(255,45) rotate(-5)">
+                    <path d="M8 46h122l-10 106H18L8 46z" fill="#06A88B" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
+                    <path d="M34 46V30a35 35 0 0 1 70 0v16" fill="none" stroke="#0F1C2E" stroke-opacity="0.35" stroke-width="7" stroke-linecap="round"/>
+                </g>
+                <!-- coral price tag, tucked bottom-left -->
+                <g transform="translate(30,215) rotate(-16)">
+                    <path d="M2 2h34l24 24-24 24-34-34z" transform="translate(0,-2)" fill="#FF6452" stroke="#0F1C2E" stroke-opacity="0.12" stroke-width="2"/>
+                    <circle cx="16" cy="10" r="4" fill="#FFFFFF" fill-opacity="0.85"/>
+                </g>
+                <polyline points="20,272 90,272 108,248 126,290 144,262 160,272 400,272" fill="none" stroke="#0F1C2E" stroke-opacity="0.18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
     </section>
 
     <section class="about-section">
@@ -64,7 +94,14 @@
             </div>
 
             <div class="about-card">
-                <div class="about-card-icon">📊</div>
+                <div class="about-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 4v15a1 1 0 0 0 1 1h15"/>
+                        <line x1="8" y1="17" x2="8" y2="11"/>
+                        <line x1="13" y1="17" x2="13" y2="7"/>
+                        <line x1="18" y1="17" x2="18" y2="13"/>
+                    </svg>
+                </div>
                 <h3>From Feedback to Insight</h3>
                 <p>
                     Customer responses become structured data that can be
@@ -135,31 +172,71 @@
         <div class="metric-grid">
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 17l-5.6 3.1 1.4-6.3L3 9.5l6.4-.6L12 3z"/>
+                    </svg>
+                </div>
                 <h3>Overall Experience</h3>
                 <p>How customers rate their overall shopping experience.</p>
             </div>
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3 4 7v10l8 4 8-4V7z"/>
+                        <path d="M4 7l8 4 8-4"/>
+                        <line x1="12" y1="11" x2="12" y2="21"/>
+                    </svg>
+                </div>
                 <h3>Product Satisfaction</h3>
                 <p>How satisfied customers are with the products they receive.</p>
             </div>
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="9" width="11" height="7"/>
+                        <path d="M13 12h4l3.2 3.2V16H13z"/>
+                        <circle cx="6.5" cy="18" r="1.6"/>
+                        <circle cx="16.5" cy="18" r="1.6"/>
+                    </svg>
+                </div>
                 <h3>Delivery</h3>
                 <p>Customer perception of delivery quality and speed.</p>
             </div>
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 11V4h7l10 10-7 7L3 11z"/>
+                        <circle cx="7.5" cy="7.5" r="1.3" fill="currentColor" stroke="none"/>
+                    </svg>
+                </div>
                 <h3>Pricing</h3>
                 <p>Whether customers consider prices fair and reasonable.</p>
             </div>
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 13a8 8 0 0 1 16 0"/>
+                        <rect x="3" y="13" width="4" height="6" rx="1.5"/>
+                        <rect x="17" y="13" width="4" height="6" rx="1.5"/>
+                        <path d="M19 19v1a3 3 0 0 1-3 3h-2"/>
+                    </svg>
+                </div>
                 <h3>Customer Support</h3>
                 <p>How customers evaluate the support they receive.</p>
             </div>
 
             <div class="metric-card">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M7 11v9H4v-9h3z"/>
+                        <path d="M7 11l4-7c1 0 2 1 2 2v4h5a2 2 0 0 1 2 2l-1.5 6a2 2 0 0 1-2 1.5H7"/>
+                    </svg>
+                </div>
                 <h3>Recommendation</h3>
                 <p>Whether customers would recommend their shopping platform.</p>
             </div>
@@ -173,7 +250,13 @@
         <div class="about-content">
 
             <div class="about-card">
-                <div class="about-card-icon">💡</div>
+                <div class="about-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M9 18h6"/>
+                        <path d="M10 21h4"/>
+                        <path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2h5a2.7 2.7 0 0 1 1.1-2A6 6 0 0 0 12 3z"/>
+                    </svg>
+                </div>
                 <h3>Who Can Benefit?</h3>
                 <p>
                     The insights can support consumers, researchers, students,
@@ -212,6 +295,11 @@
 
     <section class="about-cta">
 
+        <svg class="cta-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <path d="M6 8h12l-1 12H7L6 8z"/>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+        </svg>
+
         <span>EXPLORE THE DATA</span>
 
         <h2>Ready to Compare Shopping Experiences?</h2>
@@ -238,7 +326,3 @@
 
 </body>
 </html>
-
-
-
-
