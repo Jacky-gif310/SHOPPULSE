@@ -1,4 +1,5 @@
-﻿/* =========================================================
+```css
+/* =========================================================
    ShopPulse - Main Stylesheet
    Customer Feedback Analytics Platform
    ========================================================= */
@@ -450,6 +451,7 @@ footer {
     }
 
 }
+
 /* =========================================================
    SURVEY PAGE
    ========================================================= */
@@ -465,9 +467,8 @@ footer {
     color: #ffffff;
     text-align: center;
 
-    background:
-        linear-gradient(rgba(25, 61, 77, 0.88), rgba(25, 61, 77, 0.88)),
-        url("../assets/survyback.png") center/cover;
+    /* Removed survyback.png */
+    background: linear-gradient(135deg, #214e63, #2b6578);
 }
 
 .page-intro > div {
@@ -689,11 +690,13 @@ footer {
     }
 
 }
+
 /* Updated ShopPulse positioning */
 
 .feature-card:nth-child(1) .feature-icon::after {
     content: "";
 }
+
 /* =========================================================
    PURPOSE / COMPARISON SECTION
    ========================================================= */
@@ -777,6 +780,7 @@ footer {
     }
 
 }
+
 /* ================================
    ANALYTICS DASHBOARD
 ================================ */
@@ -1010,6 +1014,7 @@ footer {
         flex-direction: column;
         align-items: flex-start;
     }
+
 }
 
 @media (max-width: 600px) {
@@ -1029,7 +1034,9 @@ footer {
     .insights-card {
         padding: 20px;
     }
+
 }
+
 /* ================================
    ABOUT PAGE
 ================================ */
@@ -1205,6 +1212,7 @@ footer {
     .metric-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 @media (max-width: 600px) {
@@ -1227,7 +1235,9 @@ footer {
     .about-card {
         padding: 28px;
     }
+
 }
+
 /* ================================
    CONTACT PAGE
 ================================ */
@@ -1370,6 +1380,7 @@ footer {
     }
 
 }
+
 /* ================================
    AUTHENTICATION
 ================================ */
@@ -1489,7 +1500,10 @@ footer {
 
 }
 
-/* Simple ShopPulse Navigation */
+/* =========================================================
+   SIMPLE SHOPPULSE NAVIGATION
+   ========================================================= */
+
 .simple-nav {
     display: flex;
     align-items: center;
@@ -1533,6 +1547,7 @@ footer {
 }
 
 @media (max-width: 768px) {
+
     .simple-nav {
         flex-wrap: wrap;
         justify-content: center;
@@ -1544,4 +1559,6 @@ footer {
         flex-wrap: wrap;
         gap: 14px;
     }
+
 }
+```
