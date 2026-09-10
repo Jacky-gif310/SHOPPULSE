@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopPulse | Analytics Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+<header class="simple-nav">
+    <a href="index.html" class="simple-logo">ShopPulse</a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="survey.html">Survey</a>
+        <a href="results.html">Results</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <a href="login.html" class="nav-login">Login</a>
+</header>
+
+
+
+<main>
+
+    <section class="page-intro">
+        <span>SHOPPULSE ANALYTICS</span>
+        <h1>Compare Shopping Experiences With Data</h1>
+        <p>
+            Explore customer feedback across shopping platforms and discover
+            patterns in satisfaction, delivery, product quality, pricing and support.
+        </p>
+    </section>
+
+    <section class="dashboard-container">
+
+        <div id="emptyState" class="empty-state">
+            <h2>No Survey Responses Yet</h2>
+            <p>
+                Complete the survey first. Your responses will appear here
+                as comparative analytics.
+            </p>
+            <a href="survey.html" class="primary-button">Take the Survey</a>
+        </div>
+
+        <div id="dashboard" class="dashboard" style="display:none;">
+
+            <div class="dashboard-header">
+                <div>
+                    <span>OVERVIEW</span>
+                    <h2>Customer Experience Dashboard</h2>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+
+                <div class="dashboard-stat">
+                    <span>Total Responses</span>
+                    <strong id="totalResponses">0</strong>
+                </div>
+
+                <div class="dashboard-stat">
+                    <span>Platforms Compared</span>
+                    <strong id="platformCount">0</strong>
+                </div>
+
+                <div class="dashboard-stat">
+                    <span>Average Experience</span>
+                    <strong id="overallAverage">0.0</strong>
+                    <small>/ 5</small>
+                </div>
+
+                <div class="dashboard-stat">
+                    <span>Recommendation Rate</span>
+                    <strong id="recommendationRate">0%</strong>
+                </div>
+
+            </div>
+
+            <div class="highlight-grid">
+
+                <div class="highlight-card">
+                    <span>TOP-RATED PLATFORM</span>
+                    <h3 id="topPlatform">—</h3>
+                    <p id="topPlatformScore">No data available</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span>STRONGEST AREA</span>
+                    <h3 id="strongestArea">—</h3>
+                    <p id="strongestAreaScore">No data available</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span>AREA TO WATCH</span>
+                    <h3 id="weakestArea">—</h3>
+                    <p id="weakestAreaScore">No data available</p>
+                </div>
+
+            </div>
+
+            <section class="chart-card">
+                <div class="chart-heading">
+                    <div>
+                        <span>PLATFORM COMPARISON</span>
+                        <h3>Average Customer Experience Rating</h3>
+                    </div>
+                </div>
+
+                <canvas id="experienceChart"></canvas>
+            </section>
+
+            <div class="chart-grid">
+
+                <section class="chart-card">
+                    <span>DELIVERY</span>
+                    <h3>Delivery Rating</h3>
+                    <canvas id="deliveryChart"></canvas>
+                </section>
+
+                <section class="chart-card">
+                    <span>PRODUCTS</span>
+                    <h3>Product Satisfaction</h3>
+                    <canvas id="productChart"></canvas>
+                </section>
+
+                <section class="chart-card">
+                    <span>SUPPORT</span>
+                    <h3>Customer Support</h3>
+                    <canvas id="supportChart"></canvas>
+                </section>
+
+                <section class="chart-card">
+                    <span>PRICING</span>
+                    <h3>Pricing Fairness</h3>
+                    <canvas id="pricingChart"></canvas>
+                </section>
+
+                <section class="chart-card">
+                    <span>RECOMMENDATION</span>
+                    <h3>Customers Who Would Recommend</h3>
+                    <canvas id="recommendationChart"></canvas>
+                </section>
+
+                <section class="chart-card">
+                    <span>DELIVERY SPEED</span>
+                    <h3>Delivery Speed Experience</h3>
+                    <canvas id="speedChart"></canvas>
+                </section>
+
+            </div>
+
+            <section class="comparison-table-card">
+                <div class="chart-heading">
+                    <div>
+                        <span>COMPARISON</span>
+                        <h3>Platform Performance</h3>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Responses</th>
+                                <th>Experience</th>
+                                <th>Product</th>
+                                <th>Delivery</th>
+                                <th>Pricing</th>
+                                <th>Support</th>
+                                <th>Recommend</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="insights-card">
+
+                <span>AUTOMATED INSIGHTS</span>
+                <h3>What The Data Is Telling Us</h3>
+
+                <div id="insightsList" class="insights-list"></div>
+
+            </section>
+
+            <div class="export-section">
+
+                <div>
+                    <span>EXPORT</span>
+                    <h3>Take Your Results With You</h3>
+                    <p>
+                        Download the collected survey responses for further analysis.
+                    </p>
+                </div>
+
+                <div class="export-buttons">
+                    <button id="csvButton" class="primary-button">
+                        Download CSV
+                    </button>
+
+                    <button id="excelButton" class="secondary-button">
+                        Download Excel Report
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 ShopPulse — Comparative Customer Feedback Analytics</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
+
+
+
+
+

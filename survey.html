@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShopPulse customer satisfaction survey">
+    <title>ShopPulse | Customer Survey</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+<header class="simple-nav">
+    <a href="index.html" class="simple-logo">ShopPulse</a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="survey.html">Survey</a>
+        <a href="results.html">Results</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <a href="login.html" class="nav-login">Login</a>
+</header>
+
+
+
+
+<main>
+
+<section class="page-intro">
+    <div>
+        <span class="hero-badge">CUSTOMER FEEDBACK</span>
+        <h2>Customer Satisfaction Survey</h2>
+        <p>
+            Tell us about your shopping experience. Your responses help
+            identify customer satisfaction trends and areas for improvement.
+        </p>
+    </div>
+</section>
+
+<section class="survey-container">
+
+    <div class="survey-header">
+        <h2>Share Your Experience</h2>
+        <p>All questions are required unless otherwise stated.</p>
+    </div>
+
+    <form id="surveyForm">
+
+        <!-- 1. Shopping Platform -->
+        <div class="form-group">
+            <label>1. Where did you shop?</label>
+
+            <div class="platform-selection">
+
+                <label class="platform-option">
+                    <input
+                        type="radio"
+                        name="shopping_platform"
+                        value="Jumia"
+                        required
+                    >
+                    <img src="assets/Jumia.png" alt="Jumia">
+                    <span>Jumia</span>
+                </label>
+
+                <label class="platform-option">
+                    <input
+                        type="radio"
+                        name="shopping_platform"
+                        value="Amazon"
+                    >
+                    <img src="assets/Amazon.png" alt="Amazon">
+                    <span>Amazon</span>
+                </label>
+
+                <label class="platform-option">
+                    <input
+                        type="radio"
+                        name="shopping_platform"
+                        value="Kilimall"
+                    >
+                    <img src="assets/kilimal .png" alt="Kilimall">
+                    <span>Kilimall</span>
+                </label>
+
+                <label class="platform-option">
+                    <input
+                        type="radio"
+                        name="shopping_platform"
+                        value="Carrefour"
+                    >
+                    <img src="assets/carrefour.png" alt="Carrefour">
+                    <span>Carrefour</span>
+                </label>
+<label class="platform-option">
+    <input type="radio" name="shopping_platform" value="AliExpress">
+    <img src="assets/AliExpress.png" alt="AliExpress">
+    <span>AliExpress</span>
+</label>
+
+<label class="platform-option">
+    <input type="radio" name="shopping_platform" value="eBay">
+    <img src="assets/eBay.png" alt="eBay">
+    <span>eBay</span>
+</label>
+
+<label class="platform-option">
+    <input type="radio" name="shopping_platform" value="Oraimo">
+    <img src="assets/Oraimo.png" alt="Oraimo">
+    <span>Oraimo</span>
+</label>
+<label class="platform-option">
+    <input type="radio" name="shopping_platform" value="Other" id="otherPlatformRadio">
+    <span>Other</span>
+</label>
+
+<div id="otherPlatformContainer" style="display:none; margin-top:15px;">
+    <label for="otherPlatform">
+        <strong>Enter the shopping platform name</strong>
+    </label>
+    <input
+        type="text"
+        id="otherPlatform"
+        name="other_platform"
+        placeholder="e.g. Temu, Shein, Etsy"
+        maxlength="100"
+    >
+</div>
+
+            </div>
+        </div>
+
+        <!-- 2. Experience Rating -->
+        <div class="form-group">
+            <label for="experience_rating">
+                2. Rate your shopping experience (1 to 5)
+            </label>
+
+            <select id="experience_rating" name="experience_rating" required>
+                <option value="">Select a rating</option>
+                <option value="1">1 - Very Poor</option>
+                <option value="2">2 - Poor</option>
+                <option value="3">3 - Average</option>
+                <option value="4">4 - Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+        </div>
+
+        <!-- 3. Product Satisfaction -->
+        <div class="form-group">
+            <label for="product_satisfaction">
+                3. Were you satisfied with the product quality?
+            </label>
+
+            <select
+                id="product_satisfaction"
+                name="product_satisfaction"
+                required
+            >
+                <option value="">Select an answer</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <!-- 4. Delivery Rating -->
+        <div class="form-group">
+            <label for="delivery_rating">
+                4. How would you rate the delivery experience? (1 to 5)
+            </label>
+
+            <select id="delivery_rating" name="delivery_rating" required>
+                <option value="">Select a rating</option>
+                <option value="1">1 - Very Poor</option>
+                <option value="2">2 - Poor</option>
+                <option value="3">3 - Average</option>
+                <option value="4">4 - Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+        </div>
+
+        <!-- 5. Recommendation -->
+        <div class="form-group">
+            <label for="recommendation">
+                5. Would you recommend this platform to others?
+            </label>
+
+            <select id="recommendation" name="recommendation" required>
+                <option value="">Select an answer</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <!-- 6. Shopping Frequency -->
+        <div class="form-group">
+            <label for="shopping_frequency">
+                6. How often do you shop on this platform?
+            </label>
+
+            <select id="shopping_frequency" name="shopping_frequency" required>
+                <option value="">Select frequency</option>
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Rarely">Rarely</option>
+                <option value="First Time">First Time</option>
+            </select>
+        </div>
+
+        <!-- 7. Pricing -->
+        <div class="form-group">
+            <label for="pricing_fairness">
+                7. Do you think the pricing on this platform is fair?
+            </label>
+
+            <select id="pricing_fairness" name="pricing_fairness" required>
+                <option value="">Select an answer</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <!-- 8. Customer Support -->
+        <div class="form-group">
+            <label for="support_rating">
+                8. How satisfied were you with the customer support?
+            </label>
+
+            <select id="support_rating" name="support_rating" required>
+                <option value="">Select a rating</option>
+                <option value="1">1 - Very Poor</option>
+                <option value="2">2 - Poor</option>
+                <option value="3">3 - Average</option>
+                <option value="4">4 - Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+        </div>
+
+        <!-- 9. Delivery Speed -->
+        <div class="form-group">
+            <label for="delivery_speed">
+                9. How long did it take for your order to arrive?
+            </label>
+
+            <select id="delivery_speed" name="delivery_speed" required>
+                <option value="">Select delivery time</option>
+                <option value="Same day">Same day</option>
+                <option value="1-2 days">1-2 days</option>
+                <option value="3-5 days">3-5 days</option>
+                <option value="More than a week">More than a week</option>
+            </select>
+        </div>
+
+        <!-- 10. Suggestions -->
+        <div class="form-group">
+            <label for="improvement_suggestions">
+                10. What improvements would you like to see?
+            </label>
+
+            <textarea
+                id="improvement_suggestions"
+                name="improvement_suggestions"
+                rows="5"
+                placeholder="Share your suggestions..."
+                required
+            ></textarea>
+        </div>
+
+        <div id="surveyMessage" class="survey-message"></div>
+
+        <button type="submit" class="submit-button">
+            Submit Survey
+        </button>
+
+    </form>
+
+</section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 ShopPulse | Customer Feedback Analytics Platform</p>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/survey.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
